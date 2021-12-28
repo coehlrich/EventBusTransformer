@@ -8,6 +8,7 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -50,6 +51,12 @@ public class Main {
         }
         output.close();
         zip.close();
+
+        FileOutputStream write = new FileOutputStream(file);
+        FileInputStream read = new FileInputStream(transformed);
+        IOUtils.copy(read, write);
+        write.close();
+        read.close();
 
     }
 
