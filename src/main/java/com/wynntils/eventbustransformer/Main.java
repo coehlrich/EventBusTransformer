@@ -22,7 +22,7 @@ public class Main {
     public static void main(String[] args) throws ZipException, IOException {
         File file = new File(args[0]);
         ZipFile zip = new ZipFile(file);
-        File transformed = new File("transformed.jar");
+        File transformed = new File(args.length > 1 ? args[1] : "transformed.jar");
         ZipOutputStream output = new ZipOutputStream(new FileOutputStream(transformed));
 
         Enumeration<? extends ZipEntry> entries = zip.entries();
@@ -52,11 +52,13 @@ public class Main {
         output.close();
         zip.close();
 
-        FileOutputStream write = new FileOutputStream(file);
-        FileInputStream read = new FileInputStream(transformed);
-        IOUtils.copy(read, write);
-        write.close();
-        read.close();
+        if (args.length <= 1) {
+            FileOutputStream write = new FileOutputStream(file);
+            FileInputStream read = new FileInputStream(transformed);
+            IOUtils.copy(read, write);
+            write.close();
+            read.close();
+        }
 
     }
 
