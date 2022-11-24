@@ -12,7 +12,7 @@ plugins {
 }
 
 group "com.wynntils.eventbustransformer"
-version = "1.0.2"
+version = "2.0.0"
 
 java {
     toolchain {
@@ -31,8 +31,19 @@ repositories {
     }
 }
 
+compileJava {
+    // Architectury transformer embeds org.objectweb.asm.commons module-info
+    options.compilerArgs += [
+        "--add-exports=org.objectweb.asm.commons/dev.architectury.transformer.transformers.base=com.wynntils.eventbustransformer",
+        "--add-exports=org.objectweb.asm.commons/dev.architectury.transformer.shadowed.impl.org.objectweb.asm.tree=com.wynntils.eventbustransformer",
+        "--add-exports=org.objectweb.asm.commons/dev.architectury.transformer.shadowed.impl.org.objectweb.asm=com.wynntils.eventbustransformer"
+        ]
+}
+
 dependencies {
-    implementation "net.minecraftforge:eventbus:5.0.+"
+    implementation("net.minecraftforge:eventbus:6.0.+") {
+//        exclude group: "cpw.mods", module: "modlauncher"
+    }
     implementation "dev.architectury:architectury-transformer:5.2.+"
     implementation "commons-io:commons-io:2.11.+"
     implementation "org.ow2.asm:asm:9.2"
