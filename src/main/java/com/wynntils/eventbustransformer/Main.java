@@ -24,6 +24,10 @@ import net.minecraftforge.eventbus.IEventBusEngine;
 
 public class Main {
 
+    static {
+        System.setProperty("org.apache.logging.log4j.level", "INFO");
+    }
+
     private static final Logger LOGGER = LogManager.getLogger("EventBusTransformer");
 
     public static void main(String[] args) throws ZipException, IOException {
