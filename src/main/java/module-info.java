@@ -6,7 +6,10 @@ module com.wynntils.eventbustransformer {
     requires org.apache.commons.io;
     requires org.apache.logging.log4j;
     requires org.objectweb.asm.tree;
-    requires org.objectweb.asm.commons;
+    // requires cpw.mods.modlauncher;
+
+    // architectury-transformer
+    requires static org.objectweb.asm.commons;
 
     uses net.minecraftforge.eventbus.IEventBusEngine;
 }

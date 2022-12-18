@@ -9,6 +9,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id "org.gradlex.extra-java-module-info" version "1.1"
 }
 
 group "com.wynntils.eventbustransformer"
@@ -16,12 +17,13 @@ version = "2.0.0"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(16)
+        languageVersion = JavaLanguageVersion.of(17)
     }
     withSourcesJar()
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven {
         url "https://maven.minecraftforge.net/"
@@ -46,11 +48,17 @@ dependencies {
     }
     implementation "dev.architectury:architectury-transformer:5.2.+"
     implementation "commons-io:commons-io:2.11.+"
-    implementation "org.ow2.asm:asm:9.2"
-    implementation "org.ow2.asm:asm-analysis:9.2"
-    implementation "org.ow2.asm:asm-commons:9.2"
-    implementation "org.ow2.asm:asm-tree:9.2"
+    implementation "org.ow2.asm:asm:9.3"
+    implementation "org.ow2.asm:asm-analysis:9.3"
+    implementation "org.ow2.asm:asm-commons:9.3"
+    implementation "org.ow2.asm:asm-tree:9.3"
     implementation "org.apache.logging.log4j:log4j-api:2.17.1"
+}
+
+extraJavaModuleInfo {
+    failOnMissingModuleInfo.set(false)
+    
+    module("net.sf.jopt-simple:jopt-simple", "jopt.simple")
 }
 
 publishing {

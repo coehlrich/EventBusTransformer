@@ -19,17 +19,20 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 
+import net.minecraftforge.eventbus.EventBusEngine;
 import net.minecraftforge.eventbus.IEventBusEngine;
 
 public class Main {
 
     private static final Logger LOGGER = LogManager.getLogger("EventBusTransformer");
+
     public static void main(String[] args) throws ZipException, IOException {
         File file = new File(args[0]);
         ZipFile zip = new ZipFile(file);
         File transformed = new File(args.length > 1 ? args[1] : "transformed.jar");
         ZipOutputStream output = new ZipOutputStream(new FileOutputStream(transformed));
-        IEventBusEngine engine = ServiceLoader.load(IEventBusEngine.class).findFirst().orElseThrow();
+        IEventBusEngine engine = ServiceLoader.load(IEventBusEngine.class).findFirst()
+                .orElseGet(() -> new EventBusEngine()); // if not loaded as a module
 //        IEventBusEngine engine = new EventBusEngine();
 
         Enumeration<? extends ZipEntry> entries = zip.entries();
@@ -40,6 +43,7 @@ public class Main {
             if (next.getName().endsWith(".class")) {
                 Type type = Type.getObjectType(next.getName().replace(".class", ""));
                 if (engine.handlesClass(type)) {
+                    LOGGER.info("Transforming class: " + next.getName());
                     ClassReader reader = new ClassReader(content);
                     ClassNode node = new ClassNode();
                     reader.accept(node, 0);
